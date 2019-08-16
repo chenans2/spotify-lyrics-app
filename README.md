@@ -2,6 +2,10 @@
 
 This is a simple app that allows users to see what song they currently have playing on Spotify using the Spotify API. It then searches the song using the Genius API, and scrapes the corresponding song page to display the lyrics. There are two parts to it, the server, and the client.
 
+## Demo
+
+![demo](./demo.gif)
+
 ## Using the App
 
 ### 1) Create an App on Spotify
@@ -47,8 +51,8 @@ Once you have created your app, replace the `client_id` in the examples with you
 
 Began with Spotify's [web-api-auth-examples](https://github.com/spotify/web-api-auth-examples). This repo contained basic demos showing the different OAuth 2.0 flows for [authenticating against the Spotify Web API](https://developer.spotify.com/web-api/authorization-guide/).
 
-I originally wanted this app to be a simple frontend app, without the need for a backend server, so I chose Implicit Grant flow as it is suited for clients that are implemented entirely using JavaScript and running in the resource owner’s browser, and not needing any server-side code.
+I originally wanted this app to be a simple frontend app, so I chose Implicit Grant flow as it is suited for clients that are implemented entirely using JavaScript and running in the resource owner’s browser, and not needing any server-side code. However, I later ran into issues when attempting to scrape the lyrics from the Genius.com song page, thus needing a backend anyways.
 
-However, I later ran into issues when attempting to scrape the lyrics from the Genius.com song page. I attempted to make a GET request from the browser to the given URL and scrape its HTML content, but this threw a non-descriptive error, "access blocked by CORS policy". Upon further research, I realized you can not make requests like this since it would be a security issue. My solution was to make the request from a backend server instead.
+Genius does have an API endpoint for getting lyrics directly, probably due to lisensing issues, so I had to scrape the HTML content of the corresponding song page. I attempted to make a GET request from the browser to the given URL to obtain its HTML content, but this threw a non-descriptive error, "access blocked by CORS policy". Upon further research, I realized you can not make requests like this since it would be a security issue. My solution was to make the request from a backend server instead.
 
-After getting the HTML content from the Genius.com song page, I used cheerio to parse the HTML and get the lyrics.
+After getting the HTML content from the Genius.com song page, I used cheerio to parse the HTML and get just the lyrics, which were then rendered on the page.
