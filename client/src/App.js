@@ -39,18 +39,26 @@ class App extends Component {
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
-      console.log('Currently playing: ' + response.item.name);
-      name = response.item.name;
-      albumArt = response.item.album.images[0].url;
-      artist = response.item.artists[0].name;
-      this.setState({
-        nowPlaying: {
-          name: name,
-          albumArt: albumArt,
-          artist: artist
-        }
-      });
-      this.getSongID();
+      if (response.item == undefined) {
+        this.setState({
+          nowPlaying: {
+            name: 'None'
+          }
+        });
+      } else {
+        console.log('Currently playing: ' + response.item.name);
+        name = response.item.name;
+        albumArt = response.item.album.images[0].url;
+        artist = response.item.artists[0].name;
+        this.setState({
+          nowPlaying: {
+            name: name,
+            albumArt: albumArt,
+            artist: artist
+          }
+        });
+        this.getSongID();
+      }
     });
   }
 
@@ -114,10 +122,7 @@ class App extends Component {
             <button onClick={() => this.getNowPlaying()} class="btn btn-green">
               Check Now Playing
             </button>
-            <h3>
-              Now Playing: {this.state.nowPlaying.name} by{' '}
-              {this.state.nowPlaying.artist}
-            </h3>
+            <h3>Now Playing: {this.state.nowPlaying.name}</h3>
             <div>
               <img
                 class="albumart"
