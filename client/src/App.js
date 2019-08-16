@@ -83,30 +83,43 @@ class App extends Component {
       .then(json => {
         var songInfo = JSON.parse(json);
         //console.log(songInfo.response.hits);
-        var geniusUrl = songInfo.response.hits[0].result.url;
-        console.log('url: ' + geniusUrl);
-        fetch('/scrape', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ url: geniusUrl })
-        })
-          .then(htmlResponse => {
-            if (htmlResponse.ok) return htmlResponse.json();
-            throw new Error('Could not get HTML ...');
-          })
-          .then(value => {
-            console.log(value.lyrics);
-            this.setState({
-              nowPlaying: {
-                name: name,
-                albumArt: albumArt,
-                artist: artist,
-                lyrics: value.lyrics
-              }
-            });
+        if (songInfo.response.hits[0] === undefined) {
+          // no search results
+          this.setState({
+            nowPlaying: {
+              name: name,
+              albumArt: albumArt,
+              artist: artist,
+              lyrics: 'no lyrics found'
+            }
           });
+        } else {
+          // get url from first hit and scrape the HTML
+          var geniusUrl = songInfo.response.hits[0].result.url;
+          console.log('url: ' + geniusUrl);
+          fetch('/scrape', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ url: geniusUrl })
+          })
+            .then(htmlResponse => {
+              if (htmlResponse.ok) return htmlResponse.json();
+              throw new Error('Could not get HTML ...');
+            })
+            .then(value => {
+              console.log(value.lyrics);
+              this.setState({
+                nowPlaying: {
+                  name: name,
+                  albumArt: albumArt,
+                  artist: artist,
+                  lyrics: value.lyrics
+                }
+              });
+            });
+        }
       });
   }
 
