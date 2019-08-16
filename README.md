@@ -57,4 +57,4 @@ After getting the HTML content from the Genius.com song page, I used cheerio to 
 
 - search song + artist
 - search songs only (not top 50 lists)
-- remove login button if already logged in, show message to log in again after timeout
+- show message to log in again after timeout

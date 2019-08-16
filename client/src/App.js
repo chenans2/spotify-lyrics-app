@@ -97,24 +97,28 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <a href="http://localhost:8888" class="btn btn-green">
-          Log in with Spotify
-        </a>
-        <div>Now Playing: {this.state.nowPlaying.name}</div>
-        <div>
-          <img
-            class="albumart"
-            src={this.state.nowPlaying.albumArt}
-            style={{ height: 200 }}
-          />
-        </div>
-        {this.state.loggedIn && (
-          <button onClick={() => this.getNowPlaying()} class="btn btn-default">
-            Check Now Playing
-          </button>
+        {!this.state.loggedIn && (
+          <a href="http://localhost:8888" class="btn btn-green">
+            Log in with Spotify
+          </a>
         )}
-        <h3>Lyrics</h3>
-        <pre>{this.state.nowPlaying.lyrics}</pre>
+        {this.state.loggedIn && (
+          <div>
+            <button onClick={() => this.getNowPlaying()} class="btn btn-green">
+              Check Now Playing
+            </button>
+            <p>Now Playing: {this.state.nowPlaying.name}</p>
+            <div>
+              <img
+                class="albumart"
+                src={this.state.nowPlaying.albumArt}
+                style={{ height: 200 }}
+              />
+            </div>
+            <h3>Lyrics</h3>
+            <pre>{this.state.nowPlaying.lyrics}</pre>
+          </div>
+        )}
       </div>
     );
   }
