@@ -20,7 +20,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' }
+      nowPlaying: { name: 'None', albumArt: '' }
     };
   }
 
@@ -81,7 +81,7 @@ class App extends Component {
       })
       .then(json => {
         var songInfo = JSON.parse(json);
-        //console.log(songInfo.response.hits[0].result);
+        //console.log(songInfo.response.hits);
         var geniusUrl = songInfo.response.hits[0].result.url;
         console.log('url: ' + geniusUrl);
         fetch('/scrape', {
@@ -123,15 +123,17 @@ class App extends Component {
               Check Now Playing
             </button>
             <h3>Now Playing: {this.state.nowPlaying.name}</h3>
-            <div>
-              <img
-                class="albumart"
-                src={this.state.nowPlaying.albumArt}
-                style={{ height: 200 }}
-              />
-            </div>
-            <h3>Lyrics</h3>
-            <pre>{this.state.nowPlaying.lyrics}</pre>
+            {this.state.nowPlaying.name != 'None' && (
+              <div>
+                <img
+                  class="albumart"
+                  src={this.state.nowPlaying.albumArt}
+                  style={{ height: 200 }}
+                />
+                <h3>Lyrics</h3>
+                <pre>{this.state.nowPlaying.lyrics}</pre>
+              </div>
+            )}
           </div>
         )}
         <h3>APIs Used</h3>
