@@ -52,9 +52,3 @@ I originally wanted this app to be a simple frontend app, without the need for a
 However, I later ran into issues when attempting to scrape the lyrics from the Genius.com song page. I attempted to make a GET request from the browser to the given URL and scrape its HTML content, but this threw a non-descriptive error, "access blocked by CORS policy". Upon further research, I realized you can not make requests like this since it would be a security issue. My solution was to make the request from a backend server instead.
 
 After getting the HTML content from the Genius.com song page, I used cheerio to parse the HTML and get the lyrics.
-
-## TODO
-
-- search song + artist
-- search songs only (not top 50 lists)
-- show message to log in again after timeout

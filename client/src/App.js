@@ -8,6 +8,7 @@ const geniusToken =
 
 var name;
 var albumArt;
+var artist;
 
 class App extends Component {
   constructor() {
@@ -41,10 +42,12 @@ class App extends Component {
       console.log('Currently playing: ' + response.item.name);
       name = response.item.name;
       albumArt = response.item.album.images[0].url;
+      artist = response.item.artists[0].name;
       this.setState({
         nowPlaying: {
           name: name,
-          albumArt: albumArt
+          albumArt: albumArt,
+          artist: artist
         }
       });
       this.getSongID();
@@ -56,8 +59,11 @@ class App extends Component {
     var geniusApiUrl =
       'https://api.genius.com/search?q=' +
       song +
+      ' ' +
+      artist +
       '&access_token=' +
       geniusToken;
+    console.log(geniusApiUrl);
     fetch(geniusApiUrl, {
       method: 'GET'
     })
@@ -87,6 +93,7 @@ class App extends Component {
               nowPlaying: {
                 name: name,
                 albumArt: albumArt,
+                artist: artist,
                 lyrics: value.lyrics
               }
             });
@@ -107,7 +114,10 @@ class App extends Component {
             <button onClick={() => this.getNowPlaying()} class="btn btn-green">
               Check Now Playing
             </button>
-            <p>Now Playing: {this.state.nowPlaying.name}</p>
+            <h3>
+              Now Playing: {this.state.nowPlaying.name} by{' '}
+              {this.state.nowPlaying.artist}
+            </h3>
             <div>
               <img
                 class="albumart"
