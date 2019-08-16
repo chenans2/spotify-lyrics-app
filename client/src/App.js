@@ -129,6 +129,9 @@ class App extends Component {
             <pre>{this.state.nowPlaying.lyrics}</pre>
           </div>
         )}
+        <h3>APIs Used</h3>
+        <img class="logo" src="./images/spotify_logo.png" />
+        <img class="logo" src="./images/genius_logo.png" />
       </div>
     );
   }
