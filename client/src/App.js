@@ -39,7 +39,7 @@ class App extends Component {
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
-      if (response.item == undefined) {
+      if (response.item === undefined) {
         this.setState({
           nowPlaying: {
             name: 'None'
@@ -63,7 +63,8 @@ class App extends Component {
   }
 
   getSongID() {
-    const song = this.state.nowPlaying.name;
+    var song = this.state.nowPlaying.name;
+    song = song.replace('Bonus Track', '').replace('Radio Edit', '');
     var geniusApiUrl =
       'https://api.genius.com/search?q=' +
       song +
@@ -123,12 +124,13 @@ class App extends Component {
               Check Now Playing
             </button>
             <h3>Now Playing: {this.state.nowPlaying.name}</h3>
-            {this.state.nowPlaying.name != 'None' && (
+            {this.state.nowPlaying.name !== 'None' && (
               <div>
                 <img
                   class="albumart"
                   src={this.state.nowPlaying.albumArt}
                   style={{ height: 200 }}
+                  alt="albumart"
                 />
                 <h3>Lyrics</h3>
                 <pre>{this.state.nowPlaying.lyrics}</pre>
@@ -137,8 +139,8 @@ class App extends Component {
           </div>
         )}
         <h3>APIs Used</h3>
-        <img class="logo" src="./images/spotify_logo.png" />
-        <img class="logo" src="./images/genius_logo.png" />
+        <img class="logo" src="./images/spotify_logo.png" alt="spotify" />
+        <img class="logo" src="./images/genius_logo.png" alt="genius" />
       </div>
     );
   }
