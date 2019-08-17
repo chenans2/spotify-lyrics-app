@@ -6,14 +6,7 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-}
-
-.logo {
-  display: inline;
-  margin-left: auto;
-  margin-right: auto;
-  height: 3em;
-  padding: 0.5em;
+  height: 200px;
 }
 
 div,

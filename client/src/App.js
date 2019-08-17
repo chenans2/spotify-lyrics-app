@@ -90,7 +90,7 @@ class App extends Component {
               name: name,
               albumArt: albumArt,
               artist: artist,
-              lyrics: 'no lyrics found'
+              lyrics: '[no lyrics found]'
             }
           });
         } else {
@@ -142,7 +142,6 @@ class App extends Component {
                 <img
                   class="albumart"
                   src={this.state.nowPlaying.albumArt}
-                  style={{ height: 200 }}
                   alt="albumart"
                 />
                 <h3>Lyrics</h3>
@@ -151,9 +150,6 @@ class App extends Component {
             )}
           </div>
         )}
-        <h3>APIs Used</h3>
-        <img class="logo" src="./images/spotify_logo.png" alt="spotify" />
-        <img class="logo" src="./images/genius_logo.png" alt="genius" />
       </div>
     );
   }

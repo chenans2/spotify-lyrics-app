@@ -1,0 +1,11 @@
+.credits {
+  text-align: center;
+}
+
+.logo {
+  display: inline;
+  margin-left: auto;
+  margin-right: auto;
+  height: 4em;
+  padding: 0.5em;
+}
