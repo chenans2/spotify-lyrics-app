@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import spotify_logo from './images/spotify_logo.png';
-import genius_logo from './images/genius_logo.png';
+import spotifyLogo from './images/spotify_logo.png';
+import geniusLogo from './images/genius_logo.png';
 import registerServiceWorker from './registerServiceWorker';
 
 // render our React component to the 'root div' (i.e. entry point)
@@ -17,8 +17,8 @@ ReactDOM.render(
     <App />
     <div class="credits">
       <h3>APIs Used</h3>
-      <img class="logo" src={spotify_logo} alt="spotify" />
-      <img class="logo" src={genius_logo} alt="genius" />
+      <img class="logo" src={spotifyLogo} alt="spotify" />
+      <img class="logo" src={geniusLogo} alt="genius" />
     </div>
   </div>,
   document.getElementById('root')

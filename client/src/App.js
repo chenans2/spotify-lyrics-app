@@ -6,30 +6,27 @@ const spotifyApi = new SpotifyWebApi();
 const geniusToken =
   'eWe3uIGKXdVBtpadavJVTtdlf5apZ8ED4_nee_Ke47TvRjdjGSPdchAZ5ZtladkJ';
 
-var name;
-var albumArt;
-var artist;
-
 class App extends Component {
   constructor() {
     super();
     const params = this.getHashParams();
     const token = params.access_token;
+
     if (token) {
       spotifyApi.setAccessToken(token);
     }
+
     this.state = {
-      loggedIn: token ? true : false,
-      nowPlaying: { name: 'None', albumArt: '' }
+      loggedIn: !!token,
+      nowPlaying: { name: 'None', albumArt: '', artist: '' }
     };
   }
 
   getHashParams() {
-    var hashParams = {};
-    var e,
-      r = /([^&;=]+)=?([^&;]*)/g,
-      q = window.location.hash.substring(1);
-    e = r.exec(q);
+    const hashParams = {};
+    const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
+    let e = r.exec(q);
     while (e) {
       hashParams[e[1]] = decodeURIComponent(e[2]);
       e = r.exec(q);
@@ -38,23 +35,15 @@ class App extends Component {
   }
 
   getNowPlaying() {
-    spotifyApi.getMyCurrentPlaybackState().then(response => {
+    spotifyApi.getMyCurrentPlaybackState().then((response) => {
       if (response.item === undefined) {
-        this.setState({
-          nowPlaying: {
-            name: 'None'
-          }
-        });
+        this.setState({ nowPlaying: { name: 'None' } });
       } else {
-        console.log('Currently playing: ' + response.item.name);
-        name = response.item.name;
-        albumArt = response.item.album.images[0].url;
-        artist = response.item.artists[0].name;
         this.setState({
           nowPlaying: {
-            name: name,
-            albumArt: albumArt,
-            artist: artist
+            name: response.item.name,
+            albumArt: response.item.album.images[0].url,
+            artist: response.item.artists[0].name
           }
         });
         this.getSongID();
@@ -63,40 +52,31 @@ class App extends Component {
   }
 
   getSongID() {
-    var song = this.state.nowPlaying.name;
-    song = song.replace('Bonus Track', '').replace('Radio Edit', '');
-    var geniusApiUrl =
-      'https://api.genius.com/search?q=' +
-      song +
-      ' ' +
-      artist +
-      '&access_token=' +
-      geniusToken;
-    console.log(geniusApiUrl);
-    fetch(geniusApiUrl, {
-      method: 'GET'
-    })
-      .then(response => {
+    const song = this.state.nowPlaying.name;
+    const parsedSong = song
+      .replace('Bonus Track', '')
+      .replace('Radio Edit', '');
+    const geniusApiUrl = `https://api.genius.com/search?q=${parsedSong}
+      ${this.state.nowPlaying.artist}&access_token=${geniusToken}`;
+
+    fetch(geniusApiUrl, { method: 'GET' })
+      .then((response) => {
         if (response.ok) return response.text();
         throw new Error('Could not get json ...');
       })
-      .then(json => {
-        var songInfo = JSON.parse(json);
-        //console.log(songInfo.response.hits);
+      .then((json) => {
+        const songInfo = JSON.parse(json);
         if (songInfo.response.hits[0] === undefined) {
           // no search results
           this.setState({
             nowPlaying: {
-              name: name,
-              albumArt: albumArt,
-              artist: artist,
+              ...this.state.nowPlaying,
               lyrics: '[no lyrics found]'
             }
           });
         } else {
           // get url from first hit and scrape the HTML
-          var geniusUrl = songInfo.response.hits[0].result.url;
-          console.log('url: ' + geniusUrl);
+          const geniusUrl = songInfo.response.hits[0].result.url;
           fetch('/scrape', {
             method: 'POST',
             headers: {
@@ -104,17 +84,14 @@ class App extends Component {
             },
             body: JSON.stringify({ url: geniusUrl })
           })
-            .then(htmlResponse => {
+            .then((htmlResponse) => {
               if (htmlResponse.ok) return htmlResponse.json();
               throw new Error('Could not get HTML ...');
             })
-            .then(value => {
-              console.log(value.lyrics);
+            .then((value) => {
               this.setState({
                 nowPlaying: {
-                  name: name,
-                  albumArt: albumArt,
-                  artist: artist,
+                  ...this.state.nowPlaying,
                   lyrics: value.lyrics
                 }
               });
