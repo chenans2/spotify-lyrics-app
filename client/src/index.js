@@ -15,10 +15,10 @@ ReactDOM.render(
       and get user data.
     </h3>
     <App />
-    <div class="credits">
+    <div className="credits">
       <h3>APIs Used</h3>
-      <img class="logo" src={spotifyLogo} alt="spotify" />
-      <img class="logo" src={geniusLogo} alt="genius" />
+      <img className="logo" src={spotifyLogo} alt="spotify" />
+      <img className="logo" src={geniusLogo} alt="genius" />
     </div>
   </div>,
   document.getElementById('root')
